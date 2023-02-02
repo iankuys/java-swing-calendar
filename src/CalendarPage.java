@@ -13,22 +13,36 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.awt.FlowLayout;
 
 public class CalendarPage extends JFrame{
 	
     private JComboBox<GregorianCalendarApp> calendarDropdown;
     private JTextField nameField;
 	private ArrayList<GregorianCalendarApp> calendars;
+	private JPanel mainPanel;
 	private User owner;
 	
 	private void getExistingCalendars() {
 		
-		System.out.println("hey cutie");
+		calendarDropdown.removeAllItems();
 		for (int i = 0; i < owner.calendars.size(); i++) {
 			System.out.println(owner.calendars.get(i));
 			calendars.add(owner.calendars.get(i));
 			calendarDropdown.addItem(owner.calendars.get(i));
 		}
+	}
+	
+	public void deleteCalendar(GregorianCalendarApp calendarToDelete) {
+		
+		this.owner.removeCalendar(calendarToDelete);
+//		this.calendarDropdown.removeItem(calendarToDelete);
+	}
+	
+	// refresh frame
+	private void refresh() {
+		this.calendarDropdown.revalidate();
+		this.calendarDropdown.repaint();
 	}
     
     public CalendarPage(User owner) {
@@ -39,7 +53,7 @@ public class CalendarPage extends JFrame{
         setTitle("User Page");
         setSize(400, 200);
 
-        JPanel mainPanel = new JPanel();
+        this.mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(3,3,0,0));
         
         JLabel calendarLabel = new JLabel("Enter Calendar Name:");
@@ -74,26 +88,43 @@ public class CalendarPage extends JFrame{
         mainPanel.add(userListLabel);
         
         JPanel userPanel = new JPanel();
-        userPanel.setLayout(new GridLayout(2,1,0,0));
         mainPanel.add(userPanel);
         
         calendarDropdown = new JComboBox<>();
         this.getExistingCalendars();
+        userPanel.setLayout(new GridLayout(0, 2, 0, 0));
         userPanel.add(calendarDropdown);
         
-        JButton existingCalendarBtn = new JButton("Choose Calendar");
+        JButton existingCalendarBtn = new JButton("Choose");
         
         existingCalendarBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		GregorianCalendarApp selectedCalendar = (GregorianCalendarApp) calendarDropdown.getSelectedItem();
                 
+        		// start calendar GUI
                 CalendarGUI calendarGUI = new CalendarGUI(selectedCalendar, owner);
-                // close current window and start calendar!
                 calendarGUI.setVisible(true);
         	}
         });
         
         userPanel.add(existingCalendarBtn);
+        
+        JLabel label = new JLabel("");
+        userPanel.add(label);
+        
+        JButton deleteCalendarButton = new JButton("Delete");
+        
+        deleteCalendarButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		GregorianCalendarApp selectedCalendar = (GregorianCalendarApp) calendarDropdown.getSelectedItem();
+        		System.out.print("1st");
+        		deleteCalendar(selectedCalendar);
+        		getExistingCalendars();
+        		refresh();
+        	}
+        });
+        
+        userPanel.add(deleteCalendarButton);
 
         getContentPane().add(mainPanel);
     }

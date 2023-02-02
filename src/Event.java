@@ -4,59 +4,59 @@ import java.time.Duration;
 
 public class Event {
 
-    public String title;
-    private LocalDateTime start;
-    private LocalDateTime end;
-    private Duration duration;
-    public User owner;
-    private boolean isPublic;
-    public User[] sharedWith;
-    
-    Event(User owner, String title, LocalDateTime start, LocalDateTime end){
-    	
-    	this.owner = owner;
-    	this.title = title;
-    	this.start = start;
-    	this.end = end;
-    	this.findDuration();
-    	
-    }
-    
-    public void findDuration() {
-    	this.duration = Duration.between(start, end);
-    }
-    
-    public void update(String title, LocalDateTime start, LocalDateTime end) {
-    	
-    	this.title = title;
-    	this.start = start;
-    	this.end = end;
-    }
+	public String title;
+	private LocalDateTime start;
+	private LocalDateTime end;
+	private Duration duration;
+	public User owner;
+	private boolean isPublic;
+	public User[] sharedWith;
 
-    public void remove() {
-    	
-    }
+	Event(User owner, String title, LocalDateTime start, LocalDateTime end) {
 
-    public void shareWith(User user) {
+		this.owner = owner;
+		this.title = title;
+		this.start = start;
+		this.end = end;
+		this.findDuration();
 
-    }
+	}
 
-    public void unshareWith(User user) {
+	public void findDuration() {
+		this.duration = Duration.between(start, end);
+	}
 
-    }
+	public void update(LocalDateTime start, LocalDateTime end) {
 
-    public void togglePublic(){
+		this.start = start;
+		this.end = end;
+		this.duration = Duration.between(start, end);
+	}
 
-    }
-    
-    public String getStartTime() {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    	String formatDateTime = start.format(formatter);
-    	
-    	return(formatDateTime);
-    }
-    
-    public String getDurationInHours() {
-    	return("[" + Long.toString(duration.toHours()) + " hours" + "]");
-    }
+	public void remove() {
+		
+	}
+
+	public void shareWith(User user) {
+
+	}
+
+	public void unshareWith(User user) {
+
+	}
+
+	public void togglePublic() {
+
+	}
+
+	public String getStartTime() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String formatDateTime = start.format(formatter);
+
+		return (formatDateTime);
+	}
+
+	public String getDurationInHours() {
+		return ("[" + Long.toString(duration.toHours()) + " hours" + "]");
+	}
 }
